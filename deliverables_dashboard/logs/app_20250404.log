@@ -1,0 +1,5 @@
+2025-04-04 16:28:00,676 [INFO] root: Tested approval workflow on file test-file-1: Approval and rejection successful
+2025-04-04 16:28:00,833 [INFO] root: Generated preview for test.mp4: Type=video, Valid URL=True
+2025-04-04 16:29:29,612 [INFO] root: Tested approval workflow on file test-file-1: Approval and rejection successful
+2025-04-04 16:29:29,616 [INFO] root: Retrieved 1 total files
+2025-04-04 16:29:29,619 [INFO] root: Generated preview for test.mp4: Type=video, Valid URL=True
