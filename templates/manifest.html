@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manifest Preview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+            line-height: 1.6;
+            color: #333;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        /* Markdown styling */
+        .content h1 { font-size: 2em; margin-bottom: 1rem; }
+        .content h2 { font-size: 1.5em; margin: 1.5rem 0 1rem; }
+        .content ul { margin: 1rem 0; padding-left: 2rem; }
+        .content li { margin: 0.5rem 0; }
+    </style>
+</head>
+<body>
+    <div class="content">
+        {% if is_plain_text %}
+            <pre>{{ content }}</pre>
+        {% else %}
+            {{ content | safe }}
+        {% endif %}
+    </div>
+</body>
+</html>

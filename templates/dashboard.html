@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Publishing Summary</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+            line-height: 1.6;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .records-list {
+            list-style: none;
+            padding: 0;
+        }
+        .record-item {
+            background: #f5f5f5;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .record-item strong {
+            color: #666;
+        }
+        .record-item a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .record-item a:hover {
+            text-decoration: underline;
+        }
+        .manifest-link, .embed-button {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #0066cc;
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .manifest-link:hover, .embed-button:hover {
+            background: #0052a3;
+        }
+        .embed-button {
+            background: #28a745;
+            margin-left: 0.5rem;
+        }
+        .embed-button:hover {
+            background: #218838;
+        }
+        .status {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .status-published {
+            background: #4CAF50;
+            color: white;
+        }
+        .status-scheduled {
+            background: #FFC107;
+            color: black;
+        }
+        .error-text {
+            color: #dc3545;
+            margin-top: 0.5rem;
+        }
+        .retry-button {
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 0.5rem;
+        }
+        .retry-button:hover {
+            background: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <h1>Transcript ID: {{ transcript_id }}</h1>
+    <h2>Publishing Records</h2>
+    <ul class="records-list">
+        {% for record in video_records %}
+            <li class="record-item">
+                <strong>Platform:</strong> {{ record.platform }}<br>
+                <strong>Scheduled At:</strong> {{ record.scheduled_at }}<br>
+                <strong>Status:</strong> 
+                <span class="status {% if record.published %}status-published{% else %}status-scheduled{% endif %}">
+                    {{ "Published" if record.published else "Scheduled" }}
+                </span><br>
+                {% if record.publish_url %}
+                    <strong>Publish URL:</strong> <a href="{{ record.publish_url }}" target="_blank">{{ record.publish_url }}</a><br>
+                {% endif %}
+                {% if record.publish_error %}
+                    <div class="error-text">Error: {{ record.publish_error }}</div>
+                {% endif %}
+                <div class="action-buttons">
+                    {% if record.manifest_url %}
+                        <a href="/manifest?url={{ record.manifest_url }}" class="manifest-link" target="_blank">
+                            📄 View Manifest
+                        </a>
+                    {% endif %}
+                    {% if record.platform == "website" and record.publish_url %}
+                        <button class="embed-button" onclick="copyEmbedCode('{{ record.publish_url }}')">
+                            📋 Copy Embed Code
+                        </button>
+                    {% endif %}
+                    {% if record.published == false and record.publish_error %}
+                        <form action="/retry" method="post" style="display: inline-block;">
+                            <input type="hidden" name="video_id" value="{{ record.id }}">
+                            <button type="submit" class="retry-button">🔁 Retry Upload</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+    {% if not video_records %}
+        <p>No publishing records found for this transcript.</p>
+    {% endif %}
+
+    <script>
+        function copyEmbedCode(videoUrl) {
+            const embedCode = `<video controls width="640" height="360">\n  <source src="${videoUrl}" type="video/mp4">\n  Your browser does not support the video tag.\n</video>`;
+            navigator.clipboard.writeText(embedCode)
+                .then(() => alert("Embed code copied to clipboard!"))
+                .catch(err => alert("Failed to copy: " + err));
+        }
+    </script>
+</body>
+</html>

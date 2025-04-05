@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Error</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+            line-height: 1.6;
+            color: #333;
+        }
+        .error-container {
+            background: #fff3f3;
+            border: 1px solid #ffcdd2;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 600px;
+        }
+        .error-title {
+            color: #d32f2f;
+            margin-top: 0;
+        }
+        .error-message {
+            margin-bottom: 1.5rem;
+        }
+        .back-link {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #666;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .back-link:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <h1 class="error-title">Error</h1>
+        <div class="error-message">
+            {{ error }}
+        </div>
+        <a href="javascript:history.back()" class="back-link">← Go Back</a>
+    </div>
+</body>
+</html>
